@@ -3,13 +3,13 @@ from modules import *
 print(''.join('=' for i in range(40)))
 
 start = input('Starting station: ')
-if not get_node(graph,name=start):
+if not get_node(name=start):
     print("Starting station cannot be found")
     print(''.join('=' for i in range(40)))
     exit()
 
 end = input('Destination station: ')
-if not get_node(graph,name=end):
+if not get_node(name=end):
     print("Destination station cannot be found")
     print(''.join('=' for i in range(40)))
     exit()
@@ -23,9 +23,13 @@ except:
 
 t1 = time.time()
 if search_type == 1:
-    path = find_fewest_stations_path(graph,start_name=start,end_name=end)
+    path = find_fewest_stations_path_bfs(start_name=start,end_name=end)
 elif search_type == 2:
-    path = find_fewest_transfers_path(graph,start_name=start,end_name=end)
+    path = find_fewest_transfers_path(start_name=start,end_name=end)
+else:
+    print("Search type unknown.")
+    exit()
+
 t2 = time.time()
 
 if search_type == 1:
@@ -35,5 +39,7 @@ elif search_type == 2:
 print('No. of stations:',len(path))
 print('No. of transfers:',calc_transfers(path))
 print('Search completed in',str(t2-t1),'seconds.')
+
+save_explored_paths()
 
 print(''.join('=' for i in range(40)))

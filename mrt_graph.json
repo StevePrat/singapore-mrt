@@ -1,9 +1,9 @@
 [
     {
         "name":"Pasir Ris",
-        "lines":["EW","CR"],
-        "codes":["EW1","CR5"],
-        "neighbours":["EW2","CR4","CR6"]
+        "lines":["EW"],
+        "codes":["EW1"],
+        "neighbours":["EW2"]
     },
     {
         "name":"Tampines",
@@ -91,9 +91,9 @@
     },
     {
         "name":"Outram Park",
-        "lines":["EW","NE","TE"],
-        "codes":["EW16","NE3","TE17"],
-        "neighbours":["EW15","EW17","NE1","NE4","TE16","TE18"]
+        "lines":["EW","NE"],
+        "codes":["EW16","NE3"],
+        "neighbours":["EW15","EW17","NE1","NE4"]
     },
     {
         "name":"Tiong Bahru",
@@ -139,9 +139,9 @@
     },
     {
         "name":"Jurong East",
-        "lines":["EW","NS","JE"],
-        "codes":["EW24","NS1","JE5"],
-        "neighbours":["EW23","EW25","NS2","JE4","JE6"]
+        "lines":["EW","NS"],
+        "codes":["EW24","NS1"],
+        "neighbours":["EW23","EW25","NS2"]
     },
     {
         "name":"Chinese Garden",
@@ -157,9 +157,9 @@
     },
     {
         "name":"Boon Lay",
-        "lines":["EW","JS"],
-        "codes":["EW27","JS8"],
-        "neighbours":["EW26","EW28","JS7","JS9"]
+        "lines":["EW"],
+        "codes":["EW27"],
+        "neighbours":["EW26","EW28"]
     },
     {
         "name":"Pioneer",
@@ -201,7 +201,7 @@
         "name":"Expo",
         "lines":["CG","DT"],
         "codes":["CG1","DT35"],
-        "neighbours":["CG","CG2","DT36","DT34"]
+        "neighbours":["EW4","CG2","DT36","DT34"]
     },
     {
         "name":"Changi Airport",
@@ -223,9 +223,9 @@
     },
     {
         "name":"Choa Chu Kang",
-        "lines":["NS","JS","BP"],
-        "codes":["NS4","JS1","BP1"],
-        "neighbours":["NS3","NS5","JS2","BP2"]
+        "lines":["NS","BP"],
+        "codes":["NS4","BP1"],
+        "neighbours":["NS3","NS5","BP2"]
     },
     {
         "name":"Yew Tee",
@@ -247,9 +247,9 @@
     },
     {
         "name":"Woodlands",
-        "lines":["NS","TE"],
-        "codes":["NS9","TE2"],
-        "neighbours":["NS8","NS10","TE1","TE3"]
+        "lines":["NS"],
+        "codes":["NS9"],
+        "neighbours":["NS8","NS10"]
     },
     {
         "name":"Admiralty",
@@ -289,9 +289,9 @@
     },
     {
         "name":"Ang Mo Kio",
-        "lines":["NS","CR"],
-        "codes":["NS16","CR11"],
-        "neighbours":["NS15","NS17","CR10","CR12"]
+        "lines":["NS"],
+        "codes":["NS16"],
+        "neighbours":["NS15","NS17"]
     },
     {
         "name":"Bishan",
@@ -325,9 +325,9 @@
     },
     {
         "name":"Orchard",
-        "lines":["NS","TE"],
-        "codes":["NS22","TE14"],
-        "neighbours":["NS21","NS23","TE13","TE15"]
+        "lines":["NS"],
+        "codes":["NS22"],
+        "neighbours":["NS21","NS23"]
     },
     {
         "name":"Somerset",
@@ -343,9 +343,9 @@
     },
     {
         "name":"Marina Bay",
-        "lines":["NS","CE","TE"],
-        "codes":["NS27","CE2","TE20"],
-        "neighbours":["NS26","NS28","CE1","TE19","TE21"]
+        "lines":["NS","CE"],
+        "codes":["NS27","CE2"],
+        "neighbours":["NS26","NS28","CE1"]
     },
     {
         "name":"Marina South Pier",
@@ -433,9 +433,9 @@
     },
     {
         "name":"Caldecott",
-        "lines":["CC","TE"],
-        "codes":["CC17","TE9"],
-        "neighbours":["CC16","CC19","TE8","TE10"]
+        "lines":["CC"],
+        "codes":["CC17"],
+        "neighbours":["CC16","CC19"]
     },
     {
         "name":"Botanic Gardens",
@@ -495,25 +495,7 @@
         "name":"HarbourFront",
         "lines":["CC","NE"],
         "codes":["CC29","NE1"],
-        "neighbours":["CC28","CC30","NE2"]
-    },
-    {
-        "name":"Keppel",
-        "lines":["CC"],
-        "codes":["CC30"],
-        "neighbours":["CC29","CC31"]
-    },
-    {
-        "name":"Cantonment",
-        "lines":["CC"],
-        "codes":["CC31"],
-        "neighbours":["CC30","CC32"]
-    },
-    {
-        "name":"Prince Edward Road",
-        "lines":["CC"],
-        "codes":["CC32"],
-        "neighbours":["CC31","CE2"]
+        "neighbours":["CC28","NE3"]
     },
     {
         "name":"Bayfront",
@@ -571,8 +553,8 @@
     },
     {
         "name":"Hougang",
-        "lines":["NE","CR"],
-        "codes":["NE14","CR8"],
+        "lines":["NE"],
+        "codes":["NE14"],
         "neighbours":["NE13","NE15"]
     },
     {
@@ -757,9 +739,9 @@
     },
     {
         "name":"Sungei Bedok",
-        "lines":["DT","TE"],
-        "codes":["DT37","TE31"],
-        "neighbours":["DT36","TE30"]
+        "lines":["DT"],
+        "codes":["DT37"],
+        "neighbours":["DT36"]
     },
     {
         "name":"South View",

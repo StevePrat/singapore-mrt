@@ -1,11 +1,13 @@
 import json
 import time
-import itertools
+from collections import deque
 
 with open("mrt_graph.json") as f:
     graph = json.load(f)
 
-def get_node(graph,name=None,code=None):
+explored_paths = []
+
+def get_node(graph=graph,name=None,code=None):
     if name:
         for node in graph:
             if node['name'] == name:
@@ -18,21 +20,21 @@ def get_node(graph,name=None,code=None):
                 return node
         return None
 
-def get_line(graph,code):
+def get_line(graph=graph,code=''):
     return [node for node in graph if code in node['lines']]
     
-def get_lines(graph,codes):
+def get_lines(graph=graph,codes=set()):
     return [node for node in graph if set(codes) & set(node['lines'])]
 
-def find_fewest_stations_path(graph,start_code='',end_code='',start_name='',end_name='',path=[]):
+def find_fewest_stations_path_bfs(graph=graph,start_code='',end_code='',start_name='',end_name='',path=[]):
     if start_code:
-        start_node = get_node(graph,code=start_code)
+        start_node = get_node(graph=graph,code=start_code)
     if end_code:
-        end_node = get_node(graph,code=end_code)
+        end_node = get_node(graph=graph,code=end_code)
     if start_name:
-        start_node = get_node(graph,name=start_name)
+        start_node = get_node(graph=graph,name=start_name)
     if end_name:
-        end_node = get_node(graph,name=end_name)
+        end_node = get_node(graph=graph,name=end_name)
 
     if start_node and end_node:
         pass
@@ -41,22 +43,63 @@ def find_fewest_stations_path(graph,start_code='',end_code='',start_name='',end_
 
     path = path + [start_node]
     
+    explored_paths.append(path)
+
+    if start_node == end_node:
+        return path
+
+    neighbours = [get_node(graph=graph,code=neighbour_code) for neighbour_code in start_node['neighbours']]
+    queue = deque(path + [n] for n in neighbours if n)
+    fewest = []
+    while True:
+        p = queue.popleft()
+        if fewest and len(p)>len(fewest):
+            return fewest
+        explored_paths.append(p)
+        if p[-1] == end_node:
+            if not fewest:
+                fewest = p
+            elif len(p) <= len(fewest):
+                if calc_transfers(p) < calc_transfers(fewest):
+                    fewest = p
+        neighbours = [get_node(graph=graph,code=neighbour_code) for neighbour_code in p[-1]['neighbours']]
+        queue.extend(p + [n] for n in neighbours if n and n not in p)
+
+def find_fewest_stations_path_dfs(graph=graph,start_code='',end_code='',start_name='',end_name='',path=[]):
+    if start_code:
+        start_node = get_node(graph=graph,code=start_code)
+    if end_code:
+        end_node = get_node(graph=graph,code=end_code)
+    if start_name:
+        start_node = get_node(graph=graph,name=start_name)
+    if end_name:
+        end_node = get_node(graph=graph,name=end_name)
+
+    if start_node and end_node:
+        pass
+    else:
+        return None
+
+    path = path + [start_node]
+    
+    explored_paths.append(path)
+
     if start_node == end_node:
         return path
     
     shortest = None
-    neighbours = [get_node(graph,code=neighbour_code) for neighbour_code in start_node['neighbours']]
+    neighbours = [get_node(graph=graph,code=neighbour_code) for neighbour_code in start_node['neighbours']]
     for node in neighbours:
         if node in graph:
             if node not in path:
-                new_path = find_fewest_stations_path(graph,start_name=node['name'],end_name=end_name,path=path)
+                new_path = find_fewest_stations_path_dfs(graph=graph,start_name=node['name'],end_name=end_name,path=path)
                 if new_path:
                     if not shortest or len(new_path) < len(shortest):
                         shortest = new_path
-    
+
     return shortest
 
-def get_interchanges(graph,include_only_lines=[],include_lines=[],exclude_lines=[]):
+def get_interchanges(graph=graph,include_only_lines=[],include_lines=[],exclude_lines=[]):
     include_only_lines = set(include_only_lines)
     include_lines = set(include_lines)
     exclude_lines = set(exclude_lines)
@@ -75,8 +118,8 @@ def get_interchanges(graph,include_only_lines=[],include_lines=[],exclude_lines=
     if exclude_lines:
         return [node for node in interchanges if not set(node['lines']) & exclude_lines]
 
-def find_fewest_transfers(graph,line_1,line_2,plan=[],plans=[]):
-    interchange_nodes = get_interchanges(graph)
+def find_fewest_transfers(line_1,line_2,graph=graph,plan=[],plans=[]):
+    interchange_nodes = get_interchanges(graph=graph)
     line_codes = set(a for node in graph for a in node['lines'])
     line_connectivity = {a:set(b for node in interchange_nodes if a in node['lines'] for b in node['lines'] if b != a) for a in line_codes}
 
@@ -101,47 +144,50 @@ def find_fewest_transfers(graph,line_1,line_2,plan=[],plans=[]):
     
     return sub_function(line_1,line_2)[1]
 
-def find_fewest_transfers_path(graph,start_code='',end_code='',start_name='',end_name='',path=[],exclude_lines=[]):
+def find_fewest_transfers_path(graph=graph,start_code='',end_code='',start_name='',end_name='',path=[],exclude_lines=[]):
     if start_code:
-        start_node = get_node(graph,code=start_code)
+        start_node = get_node(graph=graph,code=start_code)
     if end_code:
-        end_node = get_node(graph,code=end_code)
+        end_node = get_node(graph=graph,code=end_code)
     if start_name:
-        start_node = get_node(graph,name=start_name)
+        start_node = get_node(graph=graph,name=start_name)
     if end_name:
-        end_node = get_node(graph,name=end_name)
-
-    # print('Starting station:', start_name)
-    # print('Destination station:', end_name)
-    # print('Excluded lines:',exclude_lines)
+        end_node = get_node(graph=graph,name=end_name)
 
     start_line_codes = set(start_node['lines']) - set(exclude_lines)
     target_line_codes = set(end_node['lines']) - set(exclude_lines)
 
     common_line = set(start_line_codes) & set(target_line_codes)
+    
+    # If common line exist between starting and destination stations: no transfer needed
     if common_line:
-        # print('Common line between',start_name,'and',end_name,':',common_line)
         shortest = []
         for line_code in common_line:
-            line_1_code = get_line(graph,line_code)
-            new_path = find_fewest_stations_path(line_1_code,start_name=start_node['name'],end_name=end_node['name'],path=path)
+            line_1_code = get_line(graph=graph,code=line_code)
+            new_path = find_fewest_stations_path_bfs(graph=line_1_code,start_name=start_node['name'],end_name=end_node['name'],path=path)
             if not shortest or len(new_path)<len(shortest):
                 shortest = new_path
         return shortest
+    
+    # If no common line between starting and destination station: find least number of transfers
     else:
         fewest_transfer_plans = []
         for line_1_code in start_node['lines']:
             for line_2_code in end_node['lines']:
-                transfer_plans = find_fewest_transfers(graph,line_1_code,line_2_code)
-                if not fewest_transfer_plans or len(transfer_plans[0])<len(fewest_transfer_plans[0]):
+                transfer_plans = find_fewest_transfers(line_1_code,line_2_code,graph=graph)
+                if not fewest_transfer_plans:
                     fewest_transfer_plans = transfer_plans
-        
+                elif len(transfer_plans[0])<len(fewest_transfer_plans[0]):
+                    fewest_transfer_plans = transfer_plans
+                elif len(transfer_plans[0])==len(fewest_transfer_plans[0]):
+                    fewest_transfer_plans.extend(transfer_plans)
+
         shortest = []
         for plan in fewest_transfer_plans:
-            interchanges = get_interchanges(graph,include_only_lines=plan)
+            interchanges = get_interchanges(graph=graph,include_only_lines=plan)
             for trf_stn in interchanges:
-                partial_path = find_fewest_stations_path(get_line(graph,plan[0]),start_name=start_node['name'],end_name=trf_stn['name'])
-                path = find_fewest_transfers_path(graph,start_name=trf_stn['name'],end_name=end_node['name'],path=partial_path[:-1])
+                partial_path = find_fewest_stations_path_bfs(graph=get_line(graph=graph,code=plan[0]),start_name=start_node['name'],end_name=trf_stn['name'])
+                path = find_fewest_transfers_path(graph=graph,start_name=trf_stn['name'],end_name=end_node['name'],path=partial_path[:-1])
                 if not shortest or len(path)<len(shortest):
                     shortest = path
                 
@@ -163,3 +209,7 @@ def calc_transfers(path):
 
 def path_to_string(path):
     return '-->'.join([node['name'] for node in path])
+
+def save_explored_paths():
+    with open('paths.txt','w') as f:
+        f.write('['+ ']\n['.join(path_to_string(path) for path in explored_paths) +']')

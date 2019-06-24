@@ -1,4 +1,5 @@
-from modules_2 import graph,find_fewest_transfers_path,path_to_string,get_interchanges
+from modules import *
 
-plan = find_fewest_transfers_path(graph,start_name='Bukit Batok',end_name='Clementi')
-print('Fewest transfers:',path_to_string(plan))
+path = find_fewest_transfers_path(start_name='Little India',end_name='Toa Payoh')
+print(path_to_string(path))
+save_explored_paths()
