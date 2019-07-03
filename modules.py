@@ -10,13 +10,13 @@ explored_paths = []
 def get_node(graph=graph,name=None,code=None):
     if name:
         for node in graph:
-            if node['name'] == name:
+            if node['name'].lower() == name.lower():
                 return node
         return None
     
     if code:
         for node in graph:
-            if code in node['codes']:
+            if code.upper() in node['codes']:
                 return node
         return None
 
@@ -51,7 +51,7 @@ def find_fewest_stations_path_bfs(graph=graph,start_code='',end_code='',start_na
     neighbours = [get_node(graph=graph,code=neighbour_code) for neighbour_code in start_node['neighbours']]
     queue = deque(path + [n] for n in neighbours if n)
     fewest = []
-    while True:
+    while queue:
         p = queue.popleft()
         if fewest and len(p)>len(fewest):
             return fewest
@@ -64,6 +64,8 @@ def find_fewest_stations_path_bfs(graph=graph,start_code='',end_code='',start_na
                     fewest = p
         neighbours = [get_node(graph=graph,code=neighbour_code) for neighbour_code in p[-1]['neighbours']]
         queue.extend(p + [n] for n in neighbours if n and n not in p)
+    
+    return fewest
 
 def find_fewest_stations_path_dfs(graph=graph,start_code='',end_code='',start_name='',end_name='',path=[]):
     if start_code:
@@ -171,6 +173,7 @@ def find_fewest_transfers_path(graph=graph,start_code='',end_code='',start_name=
     
     # If no common line between starting and destination station: find least number of transfers
     else:
+        # Find the order of transfers
         fewest_transfer_plans = []
         for line_1_code in start_node['lines']:
             for line_2_code in end_node['lines']:
@@ -182,6 +185,7 @@ def find_fewest_transfers_path(graph=graph,start_code='',end_code='',start_name=
                 elif len(transfer_plans[0])==len(fewest_transfer_plans[0]):
                     fewest_transfer_plans.extend(transfer_plans)
 
+        # Find the path according to the order of transfers
         shortest = []
         for plan in fewest_transfer_plans:
             interchanges = get_interchanges(graph=graph,include_only_lines=plan)

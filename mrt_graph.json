@@ -75,13 +75,13 @@
         "name":"City Hall",
         "lines":["EW","NS"],
         "codes":["EW13","NS25"],
-        "neighbours":["EW12","EW14","NS24","NS26"]
+        "neighbours":["EW12","EW14","NS24"]
     },
     {
         "name":"Raffles Place",
         "lines":["EW","NS"],
         "codes":["EW14","NS26"],
-        "neighbours":["EW13","EW15","NS25","NS27"]
+        "neighbours":["EW13","EW15","NS27"]
     },
     {
         "name":"Tanjong Pagar",

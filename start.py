@@ -33,9 +33,9 @@ else:
 t2 = time.time()
 
 if search_type == 1:
-    print('Fewest stations path:\n',path_to_string(path))
+    print('Fewest stations path:',path_to_string(path),sep='\n')
 elif search_type == 2:
-    print('Fewest transfers path:\n',path_to_string(path))
+    print('Fewest transfers path:',path_to_string(path),sep='\n')
 print('No. of stations:',len(path))
 print('No. of transfers:',calc_transfers(path))
 print('Search completed in',str(t2-t1),'seconds.')
