@@ -89,17 +89,17 @@ def find_fewest_stations_path_dfs(graph=graph,start_code='',end_code='',start_na
     if start_node == end_node:
         return path
     
-    shortest = None
+    fewest = None
     neighbours = [get_node(graph=graph,code=neighbour_code) for neighbour_code in start_node['neighbours']]
     for node in neighbours:
         if node in graph:
             if node not in path:
                 new_path = find_fewest_stations_path_dfs(graph=graph,start_name=node['name'],end_name=end_name,path=path)
                 if new_path:
-                    if not shortest or len(new_path) < len(shortest):
-                        shortest = new_path
+                    if not fewest or len(new_path) < len(fewest):
+                        fewest = new_path
 
-    return shortest
+    return fewest
 
 def get_interchanges(graph=graph,include_only_lines=[],include_lines=[],exclude_lines=[]):
     include_only_lines = set(include_only_lines)
@@ -188,12 +188,12 @@ def find_fewest_transfers_path(graph=graph,start_code='',end_code='',start_name=
         # Find the path according to the order of transfers
         shortest = []
         for plan in fewest_transfer_plans:
-            interchanges = get_interchanges(graph=graph,include_only_lines=plan)
+            interchanges = get_interchanges(graph=graph,include_only_lines=plan[0:2])
             for trf_stn in interchanges:
-                partial_path = find_fewest_stations_path_bfs(graph=get_line(graph=graph,code=plan[0]),start_name=start_node['name'],end_name=trf_stn['name'])
-                path = find_fewest_transfers_path(graph=graph,start_name=trf_stn['name'],end_name=end_node['name'],path=partial_path[:-1])
-                if not shortest or len(path)<len(shortest):
-                    shortest = path
+                partial_path = find_fewest_stations_path_bfs(graph=get_line(graph=graph,code=plan[0]),start_name=start_node['name'],end_name=trf_stn['name'],path=path)
+                p = find_fewest_transfers_path(graph=graph,start_name=trf_stn['name'],end_name=end_node['name'],path=partial_path[:-1])
+                if not shortest or len(p)<len(shortest):
+                    shortest = p
                 
         return shortest
 

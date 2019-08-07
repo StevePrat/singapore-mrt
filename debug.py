@@ -1,5 +1,4 @@
 from modules import *
 
-path = find_fewest_transfers_path(start_name='Little India',end_name='Toa Payoh')
-print(path_to_string(path))
-save_explored_paths()
+names = [node['name'] for node in get_interchanges(graph=graph,include_only_lines=['EW','DT','BP'])]
+print(names)
