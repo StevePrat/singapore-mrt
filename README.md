@@ -6,3 +6,5 @@
 Prerequisite:<br>
 Python 3.6
 </p>
+
+<p>Run start.py through command prompt/powershell/terminal to run the program</p>
